@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { 
   X,
   MessageCircle, 
@@ -34,6 +35,8 @@ export const SocialsSidebar = ({ isOpen, onClose }: SocialsSidebarProps) => {
   const [otpTimeLeft, setOtpTimeLeft] = useState(600); // 10 minutes in seconds
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [emailState, setEmailState] = useState<'disconnected' | 'entering-email' | 'email-sent'>('disconnected');
+  const [userEmail, setUserEmail] = useState('');
 
   // Timer for OTP expiration
   useEffect(() => {
@@ -55,6 +58,29 @@ export const SocialsSidebar = ({ isOpen, onClose }: SocialsSidebarProps) => {
 
   const generateRandomOTP = () => {
     return Math.random().toString().slice(2, 8);
+  };
+
+  const maskEmail = (email: string) => {
+    const [username, domain] = email.split('@');
+    if (username.length <= 4) {
+      return email; // Don't mask very short usernames
+    }
+    const maskedUsername = username.slice(0, 2) + 'X'.repeat(username.length - 4) + username.slice(-2);
+    return `${maskedUsername}@${domain}`;
+  };
+
+  const handleEmailConnect = () => {
+    setEmailState('entering-email');
+  };
+
+  const handleEmailSubmit = () => {
+    if (userEmail.trim()) {
+      setEmailState('email-sent');
+    }
+  };
+
+  const handleEmailReenter = () => {
+    setEmailState('entering-email');
   };
 
   const handleTelegramConnect = () => {
@@ -99,6 +125,11 @@ export const SocialsSidebar = ({ isOpen, onClose }: SocialsSidebarProps) => {
   const handleConnect = (socialKey: string) => {
     if (socialKey === 'telegram') {
       handleTelegramConnect();
+      return;
+    }
+
+    if (socialKey === 'email') {
+      handleEmailConnect();
       return;
     }
 
@@ -295,6 +326,53 @@ export const SocialsSidebar = ({ isOpen, onClose }: SocialsSidebarProps) => {
                               OTP expires in {formatTime(otpTimeLeft)}
                             </p>
                           </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Email Input Section */}
+                    {social.key === 'email' && emailState === 'entering-email' && (
+                      <div className="mt-4 -ml-16 mr-0 p-6 bg-gray-800/80 rounded-lg border border-amber-500/20">
+                        <div className="space-y-4">
+                          <p className="text-sm text-gray-300">
+                            Enter your account email, and we'll send you a verification link.
+                          </p>
+                          
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300">Email</label>
+                            <Input
+                              type="email"
+                              placeholder="Enter your email address"
+                              value={userEmail}
+                              onChange={(e) => setUserEmail(e.target.value)}
+                              className="bg-gray-700/50 border-amber-500/20 text-gray-200 placeholder-gray-400 focus:border-amber-500/50"
+                            />
+                          </div>
+                          
+                          <Button
+                            onClick={handleEmailSubmit}
+                            className="w-full bg-amber-600 hover:bg-amber-700 text-black font-medium"
+                          >
+                            Submit
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Email Verification Section */}
+                    {social.key === 'email' && emailState === 'email-sent' && (
+                      <div className="mt-4 -ml-16 mr-0 p-6 bg-gray-800/80 rounded-lg border border-amber-500/20">
+                        <div className="space-y-4">
+                          <p className="text-sm text-gray-300">
+                            Check your email at <span className="text-amber-400 font-medium">{maskEmail(userEmail)}</span> for the verification link. If it doesn't appear within a few minutes, check your spam folder.
+                          </p>
+                          
+                          <button
+                            onClick={handleEmailReenter}
+                            className="text-sm text-amber-400 hover:text-amber-300 underline cursor-pointer"
+                          >
+                            Wrong email? Click here to re-enter.
+                          </button>
                         </div>
                       </div>
                     )}
