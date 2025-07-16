@@ -260,7 +260,7 @@ export const SocialsSidebar = ({ isOpen, onClose }: SocialsSidebarProps) => {
 
                     {/* Telegram OTP Section */}
                     {social.key === 'telegram' && telegramState === 'waiting-otp' && (
-                      <div className="mt-4 -ml-20 -mr-6 p-6 bg-gray-800/80 rounded-lg border border-amber-500/20 w-[calc(100%+6.5rem)]">
+                      <div className="mt-4 -ml-16 mr-0 p-6 bg-gray-800/80 rounded-lg border border-amber-500/20">
                         <div className="space-y-4">
                           <div className="flex items-center justify-between w-full gap-3">
                             <div className="flex items-center bg-gray-700/50 px-4 py-3 rounded-md border border-amber-500/20 flex-1">
