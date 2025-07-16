@@ -260,41 +260,39 @@ export const SocialsSidebar = ({ isOpen, onClose }: SocialsSidebarProps) => {
 
                     {/* Telegram OTP Section */}
                     {social.key === 'telegram' && telegramState === 'waiting-otp' && (
-                      <div className="mt-4 -ml-20 -mr-6 p-6 bg-gray-800/80 rounded-lg border border-amber-500/20 w-[calc(100%+6.5rem)]">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between w-full gap-3">
-                            <div className="flex items-center bg-gray-700/50 px-4 py-3 rounded-md border border-amber-500/20 flex-1">
-                              <span className="text-lg font-mono text-amber-400 tracking-wider">{otpCode}</span>
-                            </div>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={handleCopyOtp}
-                              className="text-gray-400 hover:text-amber-400 p-2 h-10 w-10 hover:bg-transparent"
-                              title={isCopied ? "Copied!" : "Copy to clipboard"}
-                            >
-                              <Copy className={`w-4 h-4 transition-all duration-300 ${isCopied ? 'fill-current' : ''}`} />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={handleOtpRefresh}
-                              disabled={isRefreshing}
-                              className="text-gray-400 hover:text-amber-400 p-2 h-10 w-10 hover:bg-transparent"
-                              title="Refresh code"
-                            >
-                              <RotateCcw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''} ${isRefreshing ? '-rotate-180' : ''}`} />
-                            </Button>
+                      <div className="mt-4 space-y-4">
+                        <div className="flex items-center justify-between w-full gap-3">
+                          <div className="flex items-center bg-gray-700/50 px-4 py-3 rounded-md border border-amber-500/20 flex-1">
+                            <span className="text-lg font-mono text-amber-400 tracking-wider">{otpCode}</span>
                           </div>
-                          
-                          <div className="text-center space-y-1">
-                            <p className="text-xs text-gray-400">
-                              Enter the OTP in the "Fraction AI Notifications" bot on Telegram.
-                            </p>
-                            <p className="text-xs text-amber-400 font-medium">
-                              OTP expires in {formatTime(otpTimeLeft)}
-                            </p>
-                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={handleCopyOtp}
+                            className="text-gray-400 hover:text-amber-400 p-2 h-10 w-10 hover:bg-transparent"
+                            title={isCopied ? "Copied!" : "Copy to clipboard"}
+                          >
+                            <Copy className={`w-4 h-4 transition-all duration-300 ${isCopied ? 'fill-current' : ''}`} />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={handleOtpRefresh}
+                            disabled={isRefreshing}
+                            className="text-gray-400 hover:text-amber-400 p-2 h-10 w-10 hover:bg-transparent"
+                            title="Refresh code"
+                          >
+                            <RotateCcw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''} ${isRefreshing ? '-rotate-180' : ''}`} />
+                          </Button>
+                        </div>
+                        
+                        <div className="text-center space-y-1">
+                          <p className="text-xs text-gray-400">
+                            Enter the OTP in the "Fraction AI Notifications" bot on Telegram.
+                          </p>
+                          <p className="text-xs text-amber-400 font-medium">
+                            OTP expires in {formatTime(otpTimeLeft)}
+                          </p>
                         </div>
                       </div>
                     )}
